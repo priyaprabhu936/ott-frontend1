@@ -1,39 +1,131 @@
-body {
+/* Reset default browser styles */
+* {
   margin: 0;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #141414;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Navbar style */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
   background-color: #000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar h1 {
+  font-size: 24px;
+  color: #e50914;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.navbar ul li {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.navbar ul li:hover {
+  color: #e50914;
+}
+
+/* Banner style */
+.banner {
+  position: relative;
+  color: white;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
+}
+
+.banner h2 {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.banner p {
+  max-width: 500px;
+  margin: 10px 0;
+  font-size: 18px;
+  color: #ccc;
+}
+
+.banner button {
+  cursor: pointer;
   color: #fff;
+  outline: none;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: rgba(51, 51, 51, 0.5);
+  transition: all 0.2s;
 }
 
-.app {
-  text-align: center;
-  padding: 20px;
+.banner button:hover {
+  background-color: #e50914;
 }
 
-.register {
-  margin-bottom: 20px;
+/* Movie rows grid */
+.movie-row {
+  margin: 20px 0;
+  padding: 0 20px;
 }
 
-.register input {
-  margin: 5px;
-  padding: 10px;
+.movie-row h3 {
+  margin-bottom: 10px;
 }
 
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px;
-  padding: 20px;
+  gap: 10px;
 }
 
 .movie-card {
-  background: #111;
-  border-radius: 10px;
+  width: 100%;
+  height: 220px;
+  background-color: #333;
+  border-radius: 5px;
   overflow: hidden;
-  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s;
 }
 
 .movie-card img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movie-card:hover {
+  transform: scale(1.1);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #000;
+  color: #777;
+  margin-top: 40px;
 }
