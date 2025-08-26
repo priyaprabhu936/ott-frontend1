@@ -2,25 +2,25 @@ import React, { useState } from "react";
 import API_URL from "../api";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      // Fetch all users and check manually
+      const response = await fetch(`${API_URL}/users`);
+      const users = await response.json();
 
-      const data = await response.json();
+      const user = users.find(
+        (u) => u.email === email && u.password === password
+      );
 
-      if (response.ok) {
+      if (user) {
         alert("✅ Login Successful!");
-        localStorage.setItem("token", data.token); // token save
+        localStorage.setItem("user", JSON.stringify(user)); // save user info
       } else {
-        alert("❌ " + data.message);
+        alert("❌ Invalid email or password!");
       }
     } catch (err) {
       alert("⚠️ Server error!");
@@ -32,10 +32,10 @@ function Login() {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <br /><br />
