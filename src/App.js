@@ -1,31 +1,22 @@
+// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import MovieGrid from "./components/MovieGrid";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
     <Router>
-      <div>
-        {/* Navigation Bar */}
-        <nav style={{ padding: "10px", background: "#222", color: "white" }}>
-          <Link to="/" style={{ margin: "10px", color: "white" }}>
-            Home
-          </Link>
-          <Link to="/login" style={{ margin: "10px", color: "white" }}>
-            Login
-          </Link>
-          <Link to="/register" style={{ margin: "10px", color: "white" }}>
-            Register
-          </Link>
+      <div style={{ backgroundColor: "#111", minHeight: "100vh", color: "#fff" }}>
+        <nav style={{ padding: "10px", borderBottom: "1px solid #444" }}>
+          <Link to="/" style={{ marginRight: "15px", color: "#fff" }}>Home</Link>
+          <Link to="/login" style={{ marginRight: "15px", color: "#fff" }}>Login</Link>
+          <Link to="/register" style={{ color: "#fff" }}>Register</Link>
         </nav>
-
-        {/* Routes */}
         <Routes>
-          <Route path="/" element={<MovieGrid />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/" element={<h1 style={{ textAlign: "center" }}>🎬 Welcome to CineStream</h1>} />
         </Routes>
       </div>
     </Router>
