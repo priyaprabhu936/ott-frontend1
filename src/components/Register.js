@@ -1,52 +1,21 @@
-import React, { useState } from "react";
-import API_URL from "../api";
+// submit handler example
+const handleRegister = async (e) => {
+  e.preventDefault();
+  setMessage("...");
 
-function Register() {
-  const [form, setForm] = useState({ username: "", password: "" });
-  const [message, setMessage] = useState("");
+  try {
+    const res = await fetch(`${API_URL}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Registration failed");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(`${API_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      setMessage(data.message || "Registered successfully!");
-    } catch (err) {
-      setMessage("Error registering user");
-    }
-  };
-
-  return (
-    <div className="register">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={form.username}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-        />
-        <button type="submit">Register</button>
-      </form>
-      <p>{message}</p>
-    </div>
-  );
-}
-
-export default Register;
+    setMessage("✅ Registered! Please login.");
+    setUsername(""); setPassword("");
+  } catch (err) {
+    setMessage("❌ " + err.message);
+  }
+};
