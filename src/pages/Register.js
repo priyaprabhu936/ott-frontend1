@@ -1,48 +1,53 @@
-// src/pages/Register.js
 import React, { useState } from "react";
 import API_URL from "../api";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/api/register`, {
+      const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
+
       if (response.ok) {
-        setMessage("✅ User registered successfully!");
+        alert("✅ Registered Successfully!");
       } else {
-        setMessage("❌ " + data.error);
+        alert("❌ " + data.message);
       }
-    } catch (error) {
-      setMessage("⚠️ Error registering user");
+    } catch (err) {
+      alert("⚠️ Server error!");
     }
   };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h2>Register</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      /><br /><br />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      /><br /><br />
-      <button onClick={handleRegister}>Register</button>
-      <p>{message}</p>
+      <form onSubmit={handleRegister}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <br /><br />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <br /><br />
+        <button type="submit">Register</button>
+      </form>
     </div>
   );
 }
