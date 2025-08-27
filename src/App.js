@@ -24,8 +24,8 @@ function App() {
           {/* 🔴 Logout Button */}
           <button
             onClick={() => {
-              localStorage.removeItem("token"); // token remove pannum
-              window.location.href = "/login"; // redirect to login
+              localStorage.removeItem("token");
+              window.location.href = "/login";
             }}
             style={{
               marginLeft: "15px",
