@@ -1,55 +1,66 @@
 import React, { useState } from "react";
-import API_URL from "../api";
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
 
-      if (res.ok && data.token) {
+    if (!username || !password) {
+      alert("Username & Password required");
+      return;
+    }
+
+    try {
+      const response = await fetch("https://<your-backend-url>/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        alert("✅ Login Successful!");
+        alert("Login successful!");
+        window.location.href = "/movies"; // after login go to movies
       } else {
-        alert("❌ " + (data?.message || "Login failed"));
+        alert(data.message || "Login failed");
       }
-    } catch {
-      alert("⚠️ Server error!");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong. Try again!");
     }
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
+    <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
-        <br /><br />
+        <br />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
-        <br /><br />
+        <br />
         <button type="submit">Login</button>
       </form>
     </div>
   );
 }
+
 export default Login;
