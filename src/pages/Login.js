@@ -8,21 +8,21 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Fetch all users and check manually
-      const response = await fetch(`${API_URL}/users`);
-      const users = await response.json();
+      const res = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
 
-      const user = users.find(
-        (u) => u.email === email && u.password === password
-      );
-
-      if (user) {
+      if (res.ok && data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
         alert("✅ Login Successful!");
-        localStorage.setItem("user", JSON.stringify(user)); // save user info
       } else {
-        alert("❌ Invalid email or password!");
+        alert("❌ " + (data?.message || "Login failed"));
       }
-    } catch (err) {
+    } catch {
       alert("⚠️ Server error!");
     }
   };
@@ -52,5 +52,4 @@ function Login() {
     </div>
   );
 }
-
 export default Login;
