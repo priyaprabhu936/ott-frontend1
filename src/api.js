@@ -1,24 +1,17 @@
 // src/components/api.js
 import axios from "axios";
 
-// Netlify frontend use panra, so backend URL inga set pannunga.
-// Option 1: Netlify .env (Environment variables) la:
-//   Key: REACT_APP_API_BASE_URL
-//   Value: https://your-backend.onrender.com
-//
-// Option 2: Direct hardcode (test ku):
-
+// Axios instance create pannurathu
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || "https://your-backend.onrender.com", 
-  // ↑ unga backend deploy URL potu mathunga
-  withCredentials: false, // cookies venumna true podalam
+  baseURL: process.env.REACT_APP_API_BASE_URL || "https://ott-backend1-3.onrender.com",
+  withCredentials: false, // cookies venumna true podalaam
   timeout: 20000, // 20 sec timeout
 });
 
 // Request interceptor (optional)
 api.interceptors.request.use(
   (config) => {
-    // Local storage la token save panna iruntha attach pannalam
+    // Local storage la token save panna iruntha attach pannalaam
     const token = localStorage.getItem("token");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
