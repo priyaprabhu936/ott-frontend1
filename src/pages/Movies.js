@@ -7,24 +7,22 @@ function Movies() {
 
   useEffect(() => {
     fetch(`${API_URL}/movies`)
-      .then((res) => res.json())
-      .then((data) => setMovies(data))
-      .catch(() => setMovies([]));
+      .then(res => res.json())
+      .then(data => setMovies(data))
+      .catch(err => console.error(err));
   }, []);
 
   return (
-    <div style={{ textAlign: "center", marginTop: "30px" }}>
-      <h2>🎬 Movies</h2>
-      {movies.length > 0 ? (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+    <div style={{ padding: "20px" }}>
+      <h2>🍿 Movies List</h2>
+      {movies.length === 0 ? (
+        <p>No movies found</p>
+      ) : (
+        <ul>
           {movies.map((m, i) => (
-            <li key={i} style={{ margin: "10px 0" }}>
-              {m.title}
-            </li>
+            <li key={i}>{m.title} ({m.year})</li>
           ))}
         </ul>
-      ) : (
-        <p>No movies found.</p>
       )}
     </div>
   );
