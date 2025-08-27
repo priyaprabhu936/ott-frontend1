@@ -1,43 +1,45 @@
+// src/pages/Register.js
 import React, { useState } from "react";
-import API_URL from "./api";
+import { useNavigate } from "react-router-dom";
+import api from "../components/api";
 
-function Register() {
-  const [username, setUsername] = useState("");
+const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
-      const response = await fetch(`${API_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert("✅ Registered Successfully!");
-      } else {
-        alert("❌ " + data.message);
-      }
+      await api.post("/register", { name, email, password });
+      navigate("/login"); // success path
     } catch (err) {
-      alert("⚠️ Server error!");
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
+    <div>
       <h2>Register</h2>
-      <form onSubmit={handleRegister}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         />
-        <br /><br />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
         <input
           type="password"
           placeholder="Password"
@@ -45,11 +47,11 @@ function Register() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <br /><br />
         <button type="submit">Register</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );
-}
+};
 
 export default Register;
