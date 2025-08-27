@@ -1,28 +1,33 @@
 import React, { useState } from "react";
-import axios from "axios";
+import API_URL from "./api";
 
 function Register() {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://l-3.onrender.com/api/register", {
-        username,
-        email,
-        password,
+      const response = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
       });
-      setMessage(res.data.message);
-    } catch (error) {
-      setMessage(error.response?.data?.message || "Error registering user");
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("✅ Registered Successfully!");
+      } else {
+        alert("❌ " + data.message);
+      }
+    } catch (err) {
+      alert("⚠️ Server error!");
     }
   };
 
   return (
-    <div>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
         <input
@@ -30,22 +35,19 @@ function Register() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
         />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <br /><br />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
+        <br /><br />
         <button type="submit">Register</button>
       </form>
-      <p>{message}</p>
     </div>
   );
 }
