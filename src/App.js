@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Movies from "./pages/Movies";
-import PrivateRoute from "./utils/PrivateRoute"; // add this
+import PrivateRoute from "./utils/PrivateRoute"; // import panna mari
 
 function App() {
   return (
@@ -18,11 +18,15 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/movies" element={
-            <PrivateRoute>
-              <Movies />
-            </PrivateRoute>
-          } />
+          {/* 🔒 Protected Route */}
+          <Route
+            path="/movies"
+            element={
+              <PrivateRoute>
+                <Movies />
+              </PrivateRoute>
+            }
+          />
           <Route path="/" element={<h1 style={{ textAlign: "center" }}>🎬 Welcome to CineStream</h1>} />
         </Routes>
       </div>
