@@ -1,44 +1,41 @@
+// src/pages/Login.js
 import React, { useState } from "react";
-import API_URL from "./api";
+import { useNavigate } from "react-router-dom";
+import api from "../components/api";
 
-function Login() {
-  const [username, setUsername] = useState("");
+const Login = () => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      const res = await api.post("/login", { email, password });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        alert("✅ Login Successful!");
-        localStorage.setItem("token", data.token); // save token
-      } else {
-        alert("❌ " + data.message);
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        navigate("/dashboard"); // success path
       }
     } catch (err) {
-      alert("⚠️ Server error!");
+      setError(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
+    <div>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <br /><br />
         <input
           type="password"
           placeholder="Password"
@@ -46,11 +43,11 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <br /><br />
         <button type="submit">Login</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );
-}
+};
 
 export default Login;
