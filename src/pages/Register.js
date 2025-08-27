@@ -2,24 +2,23 @@ import React, { useState } from "react";
 import API_URL from "../api";
 
 function Register() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/register`, {
+      const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password })
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      const data = await res.json();
+      if (res.ok) {
         alert("✅ Registered Successfully!");
       } else {
-        alert("❌ " + data.message);
+        alert("❌ " + (data?.message || "Register failed"));
       }
     } catch (err) {
       alert("⚠️ Server error!");
@@ -31,10 +30,10 @@ function Register() {
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <br /><br />
@@ -51,5 +50,4 @@ function Register() {
     </div>
   );
 }
-
 export default Register;
