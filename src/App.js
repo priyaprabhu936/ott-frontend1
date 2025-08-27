@@ -1,24 +1,51 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Movies from "./pages/Movies";
-import PrivateRoute from "./utils/PrivateRoute"; // import panna mari
+import { BrowserRouter as Router, Route, Routes, Navigate, Link } from "react-router-dom";
+import Login from "./Login";
+import Register from "./Register";
+import Movies from "./Movies";
+
+// 🔐 Protected Route wrapper
+const PrivateRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/login" />;
+};
 
 function App() {
   return (
     <Router>
       <div style={{ backgroundColor: "#111", minHeight: "100vh", color: "#fff" }}>
+        {/* 🔹 Navigation Bar */}
         <nav style={{ padding: "10px", borderBottom: "1px solid #444" }}>
           <Link to="/" style={{ marginRight: "15px", color: "#fff" }}>Home</Link>
           <Link to="/login" style={{ marginRight: "15px", color: "#fff" }}>Login</Link>
           <Link to="/register" style={{ marginRight: "15px", color: "#fff" }}>Register</Link>
-          <Link to="/movies" style={{ color: "#fff" }}>Movies</Link>
+          <Link to="/movies" style={{ marginRight: "15px", color: "#fff" }}>Movies</Link>
+
+          {/* 🔴 Logout Button */}
+          <button
+            onClick={() => {
+              localStorage.removeItem("token"); // token remove pannum
+              window.location.href = "/login"; // redirect to login
+            }}
+            style={{
+              marginLeft: "15px",
+              backgroundColor: "#e50914",
+              color: "#fff",
+              border: "none",
+              padding: "5px 10px",
+              cursor: "pointer",
+              borderRadius: "5px",
+            }}
+          >
+            Logout
+          </button>
         </nav>
+
+        {/* 🔹 Routes */}
         <Routes>
+          <Route path="/" element={<h1 style={{ padding: "20px" }}>🍿 Welcome to OTT App</h1>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* 🔒 Protected Route */}
           <Route
             path="/movies"
             element={
@@ -27,7 +54,6 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/" element={<h1 style={{ textAlign: "center" }}>🎬 Welcome to CineStream</h1>} />
         </Routes>
       </div>
     </Router>
