@@ -7,9 +7,10 @@ import {
   Link,
 } from "react-router-dom";
 
-import Login from "./Login";
-import Register from "./Register";
-import Movies from "./Movies";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Movies from "./pages/Movies";
+import Profile from "./pages/Profile";
 
 // Protected Route wrapper
 const PrivateRoute = ({ children }) => {
@@ -28,6 +29,7 @@ function App() {
           <Link to="/login" style={{ marginRight: "15px", color: "#fff" }}>Login</Link>
           <Link to="/register" style={{ marginRight: "15px", color: "#fff" }}>Register</Link>
           <Link to="/movies" style={{ marginRight: "15px", color: "#fff" }}>Movies</Link>
+          <Link to="/profile" style={{ marginRight: "15px", color: "#fff" }}>Profile</Link>
 
           {/* Logout Button */}
           <button
@@ -55,12 +57,21 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Protected Route */}
+          {/* Protected Routes */}
           <Route
             path="/movies"
             element={
               <PrivateRoute>
                 <Movies />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
               </PrivateRoute>
             }
           />
