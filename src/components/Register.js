@@ -1,54 +1,52 @@
-// src/pages/Register.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../components/api";
+import API from "./api";
 
 const Register = () => {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-
     try {
-      await api.post("/register", { name, email, password });
-      navigate("/login"); // success path
+      await API.post("/register", { username, email, password });
+      setMessage("User registered successfully!");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setMessage("Error registering user.");
     }
   };
 
   return (
     <div>
       <h2>Register</h2>
+      {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
+        <br />
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Enter Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        <br />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Enter Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        <br />
         <button type="submit">Register</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );
