@@ -1,41 +1,44 @@
 import React, { useState } from "react";
+import { loginUser } from "./api";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../api";
 
-export default function Login() {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     try {
-      const data = await loginUser({ username, password });
-      localStorage.setItem("token", data.token);
-      navigate("/dashboard");
+      const res = await loginUser({ username, password });
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        navigate("/dashboard");
+      } else {
+        alert("Invalid credentials");
+      }
     } catch (err) {
-      alert("Invalid username or password");
+      alert("Login failed. Please check your username & password.");
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div style={{ padding: "20px" }}>
+      <h1>Login</h1>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      /><br />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      /><br />
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
 }
+
+export default Login;
