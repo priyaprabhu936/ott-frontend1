@@ -1,34 +1,31 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: "https://ott-backend1-3.onrender.com", // un backend link
+const API = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URI,
 });
 
-// Register
 export const registerUser = async (userData) => {
-  return await api.post("/register", userData);
+  const res = await API.post("/register", userData);
+  return res.data;
 };
 
-// Login
 export const loginUser = async (userData) => {
-  return await api.post("/login", userData);
+  const res = await API.post("/login", userData);
+  return res.data;
 };
 
-// Profile
 export const getProfile = async (token) => {
-  return await api.get("/profile", {
+  const res = await API.get("/profile", {
     headers: { Authorization: `Bearer ${token}` },
   });
+  return res.data;
 };
 
-// Movies
 export const getMovies = async () => {
-  return await api.get("/movies");
+  const res = await API.get("/movies");
+  return res.data;
 };
 
-// Logout (frontend side token remove)
 export const logoutUser = () => {
   localStorage.removeItem("token");
 };
-
-export default api;
