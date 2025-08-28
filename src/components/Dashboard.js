@@ -1,20 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../api";
 
-function Dashboard() {
+export default function Dashboard() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logoutUser();
     navigate("/");
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
       <h2>Welcome to Dashboard 🎉</h2>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
 }
-
-export default Dashboard;
