@@ -7,8 +7,9 @@ const Dashboard = ({ onLogout }) => {
   };
 
   return (
-    <div>
-      <h2>Welcome to Dashboard 🎉</h2>
+    <div style={{ padding: "20px" }}>
+      <h1>Welcome to Dashboard 🎉</h1>
+      <p>You are successfully logged in!</p>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
