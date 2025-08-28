@@ -6,12 +6,13 @@ function Dashboard() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/login");
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Welcome to Dashboard 🚀</h1>
+    <div>
+      <h2>Dashboard</h2>
+      <p>Welcome! You are logged in ✅</p>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
